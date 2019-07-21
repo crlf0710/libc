@@ -19,6 +19,10 @@
 // Attributes needed when building as part of the standard library
 #![cfg_attr(
     feature = "rustc-dep-of-std",
+    feature(no_core)
+)]
+#![cfg_attr(
+    feature = "rustc-dep-of-test",
     feature(cfg_target_vendor, link_cfg, no_core)
 )]
 #![cfg_attr(libc_thread_local, feature(thread_local))]
@@ -27,6 +31,7 @@
 #![deny(missing_copy_implementations, safe_packed_borrows)]
 #![no_std]
 #![cfg_attr(feature = "rustc-dep-of-std", no_core)]
+#![cfg_attr(feature = "rustc-dep-of-test", no_core)]
 #![cfg_attr(target_os = "redox", feature(static_nobundle))]
 
 #[macro_use]
@@ -35,6 +40,16 @@ mod macros;
 cfg_if! {
     if #[cfg(feature = "rustc-dep-of-std")] {
         extern crate rustc_std_workspace_core as core;
+        #[allow(unused_imports)]
+        use core::iter;
+        #[allow(unused_imports)]
+        use core::option;
+    }
+}
+
+cfg_if! {
+    if #[cfg(feature = "rustc-dep-of-test")] {
+        extern crate rustc_test_workspace_core as core;
         #[allow(unused_imports)]
         use core::iter;
         #[allow(unused_imports)]

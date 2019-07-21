@@ -21,12 +21,14 @@ appveyor = { repository = "rust-lang/libc", project_name = "rust-lang-libs/libc"
 
 [dependencies]
 rustc-std-workspace-core = { version = "1.0.0", optional = true }
+rustc-test-workspace-core = { version = "1.0.0", optional = true }
 
 [features]
 default = ["std"]
 std = []
 align = []
 rustc-dep-of-std = ['align', 'rustc-std-workspace-core']
+rustc-dep-of-test = ['rustc-test-workspace-core']
 extra_traits = []
 # use_std is deprecated, use `std` instead
 use_std = [ 'std' ]
